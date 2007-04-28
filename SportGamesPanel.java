@@ -10,8 +10,11 @@ public class SportGamesPanel extends JSplitPane {
 	private int id = -1;
 	private JPanel gamepanel = new JPanel();
 	private JPanel infopanel = new JPanel(new GridLayout(5,2));
+	private Sport sport;
 	
-	public SportGamesPanel(int sportid, JTabbedPane pane){
+	public SportGamesPanel(Sport sport, JTabbedPane pane){
+		this.id = sport.getId();
+		this.sport = sport;
 		JScrollPane gpane = this.getGamesPane(pane);
 		JScrollPane ipane = this.getInfoPane();
 		this.setTopComponent(gpane);
@@ -25,12 +28,12 @@ public class SportGamesPanel extends JSplitPane {
 		gpane.setMinimumSize(minimumSize);
 		ipane.setMinimumSize(minimumSize2);
 		
-		this.id = sportid;
 		this.setSize(new Dimension(160,400));
 		this.setLocation(new Point(0,0));
 		this.setOpaque(true);
 		
 	}
+	
 	private class CloseButton extends JButton implements ActionListener { 
 		private static final long serialVersionUID = 1L;
 		JTabbedPane pane;
@@ -41,18 +44,54 @@ public class SportGamesPanel extends JSplitPane {
 			this.sp = sp;
 			this.addActionListener(this);
 		}
-
+		
 		public void actionPerformed(ActionEvent arg0) {
 			this.pane.remove(this.sp);
 			ClientInterface.openedPanels.remove(this.sp);
 			ClientInterface.openedTabs.remove(""+id);
 		}
 	}
+	
+	private class SuscribeButton extends JButton implements ActionListener { 
+		private static final long serialVersionUID = 1L;
+		JTabbedPane pane;
+		SportGamesPanel sp;
+		public SuscribeButton(JTabbedPane pane, SportGamesPanel sp){
+			super("Suscribir a todos los juegos");
+			this.pane = pane;
+			this.sp = sp;
+			this.addActionListener(this);
+		}
+
+		public void actionPerformed(ActionEvent arg0) {
+			
+			String request = sport.getId()+"";
+			if(!ClientInterface.suscrtionsid.contains(request)){
+				Message m = new Message(request, Message.GET_GAME);
+				ClientInterface.suscrtionsid.add(request);
+				ClientInterface.cliente.sendMessage(m);
+				ClientInterface.sb.setCenterMessage("Suscripciones: "+ClientInterface.suscrtionsid.size());
+				
+			}
+			
+			GameSuscriptionFrame s = new GameSuscriptionFrame(sport, this.sp);
+			this.pane.remove(this.sp);
+			ClientInterface.openedTabs.remove(""+id);
+			s.setVisible(true);
+			
+		}
+		
+		
+	}
+	
 	public JScrollPane getGamesPane(JTabbedPane p){
 		JPanel subpanel = new JPanel(new BorderLayout());
 		JScrollPane pane = new JScrollPane(subpanel);
 		CloseButton close = new CloseButton(p, this);
+		SuscribeButton suscribe = new SuscribeButton(p,this);
+		
 		JPanel subsubpanel = new JPanel(new FlowLayout());
+		subsubpanel.add(suscribe);
 		subsubpanel.add(close);
 		subsubpanel.add(new JLabel("Juegos Disponibles:"));
 		subpanel.add(subsubpanel, BorderLayout.NORTH);

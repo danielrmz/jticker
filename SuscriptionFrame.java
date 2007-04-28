@@ -4,6 +4,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.*;
+import com.nqadmin.swingSet.*;
 
 public class SuscriptionFrame extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
@@ -11,7 +12,6 @@ public class SuscriptionFrame extends JFrame implements WindowListener {
 	private Team visitor = null;
 	private JPanel content = new JPanel(new GridLayout(2,2));
 	private String id = "";
-		
 	public SuscriptionFrame(Game g, String id){
 		local = g.getLocal();
 		visitor = g.getVisit();

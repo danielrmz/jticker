@@ -239,7 +239,7 @@ public class ClientInterface extends JFrame implements ActionListener, WindowLis
 				    
 				    if(!openedTabs.contains(s.getId()+"")){
 				    	openedTabs.add(s.getId()+"");
-				    	SportGamesPanel panel = new SportGamesPanel(s.getId(),desktop);
+				    	SportGamesPanel panel = new SportGamesPanel(s,desktop);
 				    	panel.addGames(s.getGames());
 				    	openedPanels.add(panel);
 				    	desktop.addTab(s.getName(),s.getImage(), panel);

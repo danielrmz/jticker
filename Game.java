@@ -1,4 +1,7 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
+import javax.swing.Timer;
 
 /**
  * Clase Game para encapsular los datos del juego y transmitirse a traves de la conexion
@@ -20,10 +23,13 @@ public class Game implements Serializable {
 	
 	public String fecha = "No definida";
 	
-
+	public int tiempo = -1;
+	
 	public static int g = 1;
 	
 	public int id = 0;
+	
+	public Timer timer = null;
 	
 	public Game(Team local, Team visitante){
 		this.local = local;
@@ -65,5 +71,29 @@ public class Game implements Serializable {
 		return this.scvisitante;
 	}
 	
+	public void start(){
+		timer = new Timer(1000, new ActionListener(){
 
+			public void actionPerformed(ActionEvent arg0) {
+				tiempo++;
+			} });
+		timer.start();
+	}
+	
+	public void stop(){
+		timer.stop();
+	}
+	
+	public String toTime(){
+		int hora = tiempo/3600;
+		int minutos = (tiempo%3600)/60;
+		int segundos = (tiempo % 3600 % 60);
+		String horastr = hora<10?"0"+hora:hora+"";
+		String minustr = minutos<10?"0"+minutos:minutos+"";
+		String segustr = segundos<10?"0"+segundos:segundos+"";
+		if(hora == 0 && minutos == 0 && segundos == 0){
+			return "Sin empezar";
+		}
+		return  horastr+":"+minustr+":"+segustr;
+	}
 }
