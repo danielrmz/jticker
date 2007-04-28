@@ -2,9 +2,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-
 import javax.swing.*;
-import com.nqadmin.swingSet.*;
 
 public class SuscriptionFrame extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
