@@ -2,8 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import com.nqadmin.swingSet.*;
-
 public class GameSuscriptionFrame extends JFrame implements WindowListener, ActionListener {
 	Sport sport;
 	String id = "";
