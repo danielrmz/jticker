@@ -27,6 +27,8 @@ public class Message implements Serializable {
 	
 	public static int GET_SPORT = 8;
 	
+	public static int REMOVE_SUSCRIBEDSPORT = 9;
+	
 	private static final long serialVersionUID = -2723363051271966964L;
 	
 	private Object data = null;

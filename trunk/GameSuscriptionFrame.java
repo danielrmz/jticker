@@ -40,17 +40,23 @@ public class GameSuscriptionFrame extends JFrame implements WindowListener, Acti
 	private static final long serialVersionUID = 1L;
 	public void windowActivated(WindowEvent arg0) {}
 	public void windowClosed(WindowEvent arg0) {}
-	public void windowClosing(WindowEvent arg0) {
-		ClientInterface.openedPanels.remove(this.sp);
-	}
+	public void windowClosing(WindowEvent arg0) { this.close();}
 	public void windowDeactivated(WindowEvent arg0) {}
 	public void windowDeiconified(WindowEvent arg0) {}
 	public void windowIconified(WindowEvent arg0) {}
 	public void windowOpened(WindowEvent arg0) {}
 
 	public void actionPerformed(ActionEvent arg0) {
-		ClientInterface.openedPanels.remove(this.sp);
+		this.close();
 		this.dispose();
 	}
-
+	
+	public void close(){
+		//for(int i = 0; i<)
+		ClientInterface.suscrtionsid.remove(this.id);
+		ClientInterface.cliente.sendMessage(new Message(this.id, Message.REMOVE_SUSCRIBEDSPORT));
+		ClientInterface.openedPanels.remove(this.sp);
+		ClientInterface.sb.setCenterMessage("Suscripciones: "+ClientInterface.suscrtionsid.size());
+		
+	}
 }
