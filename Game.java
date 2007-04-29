@@ -84,6 +84,10 @@ public class Game implements Serializable {
 		timer.stop();
 	}
 	
+	public String toString(){
+		return this.getLocal().getName()+"("+this.getLocalScore()+") vs. "+this.getVisit().getName()+"("+this.getVisitScore()+")";
+	}
+	
 	public String toTime(){
 		int hora = tiempo/3600;
 		int minutos = (tiempo%3600)/60;
@@ -91,7 +95,7 @@ public class Game implements Serializable {
 		String horastr = hora<10?"0"+hora:hora+"";
 		String minustr = minutos<10?"0"+minutos:minutos+"";
 		String segustr = segundos<10?"0"+segundos:segundos+"";
-		if(hora == 0 && minutos == 0 && segundos == 0){
+		if(hora == 0 && minutos == 0 && segundos == -1){
 			return "Sin empezar";
 		}
 		return  horastr+":"+minustr+":"+segustr;

@@ -76,7 +76,6 @@ public class SportGamesPanel extends JSplitPane {
 			
 			GameSuscriptionFrame s = new GameSuscriptionFrame(sport, this.sp);
 			this.pane.remove(this.sp);
-			ClientInterface.openedTabs.remove(""+id);
 			s.setVisible(true);
 			
 		}

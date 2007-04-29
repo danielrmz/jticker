@@ -4,7 +4,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.*;
 
-public class SuscriptionFrame extends JFrame implements WindowListener {
+public class SuscriptionFrame extends JDialog implements WindowListener {
 	private static final long serialVersionUID = 1L;
 	private Team local = null;
 	private Team visitor = null;

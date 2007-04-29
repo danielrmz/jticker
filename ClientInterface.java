@@ -21,6 +21,8 @@ public class ClientInterface extends JFrame implements ActionListener, WindowLis
 	
 	public static LinkedList <Game> suscriptions = new LinkedList<Game>();
 	
+	public static LinkedList <Sport> sportsuscriptions = new LinkedList<Sport>();
+	
 	public static LinkedList <String>  suscrtionsid = new LinkedList<String>();
 	
 	public JMenuItem conectar = new JMenuItem("Conectar");
@@ -110,7 +112,9 @@ public class ClientInterface extends JFrame implements ActionListener, WindowLis
 					if(m != null){
 						int type = m.getType();
 						if(type == Message.FETCH_CATEGORIES){
-							sports.clear();
+							try {
+								sports.clear();
+							} catch (Exception e){}
 							deportes = (LinkedList<Sport>)m.getData();
 							Object aux[] = sort(deportes);
 							
@@ -127,6 +131,26 @@ public class ClientInterface extends JFrame implements ActionListener, WindowLis
 						} else if(type == Message.GAME_REMOVE){
 							Game g = (Game)m.getData();
 							suscriptions.remove(g);
+						} else if(type == Message.GET_SPORT){
+							Sport s = (Sport)m.getData();
+							System.out.println(s.getGames().getLast().toString());
+							try {
+								int i = 0;
+								while(sportsuscriptions.size() > i && sportsuscriptions.get(i).getId() != s.getId()){ i++; }
+								if(sportsuscriptions.size() > 0){
+									sportsuscriptions.remove(i);
+									sportsuscriptions.add(i,s);
+								} else {
+									sportsuscriptions.addLast(s);
+								}
+							} catch (IndexOutOfBoundsException e){
+								e.printStackTrace();
+								System.exit(0);
+							}
+							
+						} else if(type == Message.REMOVE_SUSCRIBEDSPORT){
+							Sport s = (Sport)m.getData();
+							sportsuscriptions.remove(s);
 						}
 						cliente.receiver.message = null;
 						sb.setRightMessage(new Date().toString());
