@@ -34,6 +34,11 @@ public class ServerThread implements Runnable {
 	private LinkedList<Game> suscriptions = new LinkedList<Game>();
 	
 	/**
+	 * Suscripciones a deportes
+	 */
+	private LinkedList<Sport> sportsuscriptions = new LinkedList<Sport>();
+	
+	/**
 	 * Timer que manda las actualizaciones de las suscripciones a los usuarios
 	 */
 	private Timer suscription_timer;
@@ -53,6 +58,15 @@ public class ServerThread implements Runnable {
 				
 				for(int i = 0; i<suscriptions.size();i++) {
 					Message m = new Message(suscriptions.get(i), Message.GAME_UPDATE);
+					sendMessage(m);
+				}
+				
+				for(int i = 0; i < sportsuscriptions.size();i++){
+					Sport s = sportsuscriptions.get(i);
+					int score = s.getGames().getLast().getLocalScore() + 1;
+					s.getGames().getLast().setLScore(score);
+					System.out.println(s.getGames().getLast().toString());
+					Message m = new Message(s, Message.GET_SPORT);
 					sendMessage(m);
 				}
 			}
@@ -169,12 +183,25 @@ public class ServerThread implements Runnable {
 					} else if(type == Message.GET_GAME){
 						String ids[] = (message.getData()+"").split(" ");
 						int sportid = Integer.parseInt(ids[0]);
-						int gameid  = Integer.parseInt(ids[1]);
 						Sport s = Server.getSport(sportid);
-						Game g = s.getGame(gameid);
-						this.sendMessage(new Message(g, Message.GET_GAME));
-						this.suscriptions.add(g);
-						Server.logger.logdate("El usuario: "+getHostName()+" se suscribió al juego "+g.getLocal().getName() + " vs. "+g.getVisit().getName());
+						
+						if(ids.length == 2){
+							int gameid  = Integer.parseInt(ids[1]);
+							Game g = s.getGame(gameid);
+							this.sendMessage(new Message(g, Message.GET_GAME));
+							this.suscriptions.add(g);
+							Server.logger.logdate("El usuario: "+getHostName()+" se suscribió al juego "+g.getLocal().getName() + " vs. "+g.getVisit().getName());
+						} else {
+							this.sendMessage(new Message(s, Message.GET_SPORT));
+							this.sportsuscriptions.add(s);
+							Server.logger.logdate("El usuario: "+getHostName()+" se suscribió a los partidos de :"+s.getName());							
+						}
+						
+					} else if(type == Message.GET_SPORT){
+						String id = (message.getData()+"");
+						Sport s = Server.getSport(Integer.parseInt(id));
+						this.sendMessage(new Message(s, Message.GET_SPORT));
+						
 					} else if(type == Message.GAME_REMOVE){
 						String ids[] = (message.getData()+"").split(" ");
 						int sportid = Integer.parseInt(ids[0]);
@@ -183,6 +210,11 @@ public class ServerThread implements Runnable {
 						Game g = s.getGame(gameid);
 						this.suscriptions.remove(g);
 						this.sendMessage(new Message(g, Message.GAME_REMOVE));
+					} else if(type == Message.REMOVE_SUSCRIBEDSPORT){
+						String id = (message.getData()+"");
+						Sport s = Server.getSport(Integer.parseInt(id));
+						this.sportsuscriptions.remove(s);
+						this.sendMessage(new Message(s, Message.REMOVE_SUSCRIBEDSPORT));
 					} else if(type == Message.CLOSE_GAME){
 						
 					} else if(type == Message.CLOSE_CONNECTION){

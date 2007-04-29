@@ -2,9 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GameSuscriptionFrame extends JFrame implements WindowListener, ActionListener {
+public class GameSuscriptionFrame extends JDialog implements WindowListener, ActionListener {
 	Sport sport;
-	String id = "";
+	int id = 0;
 	Table marcadores = new Table(480,400);
 	JButton cerrar = new JButton("Cerrar");
 	SportGamesPanel sp = null;
@@ -12,7 +12,7 @@ public class GameSuscriptionFrame extends JFrame implements WindowListener, Acti
 	public GameSuscriptionFrame(Sport s, SportGamesPanel sp){
 		this.sport = s;
 		this.sp = sp;
-		this.id = s.getName();
+		this.id = s.getId();
 		this.setSize(new Dimension(500,300));
 		this.addWindowListener(this);
 		this.setTitle("Juegos para: "+s.getName());
@@ -52,11 +52,10 @@ public class GameSuscriptionFrame extends JFrame implements WindowListener, Acti
 	}
 	
 	public void close(){
-		//for(int i = 0; i<)
-		ClientInterface.suscrtionsid.remove(this.id);
+		ClientInterface.suscrtionsid.remove(this.id+"");
 		ClientInterface.cliente.sendMessage(new Message(this.id, Message.REMOVE_SUSCRIBEDSPORT));
 		ClientInterface.openedPanels.remove(this.sp);
 		ClientInterface.sb.setCenterMessage("Suscripciones: "+ClientInterface.suscrtionsid.size());
-		
+		ClientInterface.openedTabs.remove(""+this.id);
 	}
 }
