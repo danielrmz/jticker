@@ -66,7 +66,8 @@ public class ServerThread implements Runnable {
 					int score = s.getGames().getLast().getLocalScore() + 1;
 					s.getGames().getLast().setLScore(score);
 					System.out.println(s.getGames().getLast().toString());
-					Message m = new Message(s, Message.GET_SPORT);
+					Sport saux = new Sport(s);
+					Message m = new Message(saux, Message.GET_SPORT);
 					sendMessage(m);
 				}
 			}
