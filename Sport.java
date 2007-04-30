@@ -24,6 +24,14 @@ public class Sport implements Serializable {
 		 c++;
 	}
 	
+	public Sport(Sport s){
+		this.name = s.getName();
+		this.id = s.getId();
+		this.juegos = s.getGames();
+		this.equipos = s.getTeams();
+		this.image = s.getImage();
+	}
+	
 	public Sport(String name, String image){
 		 this.name = name;
 		 this.setImage(image);
@@ -74,6 +82,10 @@ public class Sport implements Serializable {
 
 	public LinkedList<Game> getGames(){
 		return this.juegos;
+	}
+	
+	public LinkedList<Team> getTeams(){
+		return this.equipos;
 	}
 	
 	public String getName(){
